@@ -120,8 +120,8 @@ public class WeaponController : MonoBehaviour
 
     void WeaponFXEffects()
     {
-        Vector2 muzleRot = muzle.rotation.eulerAngles;
-        muzleRot = new Vector2(muzle.rotation.x, muzle.rotation.y + 90);
+        //Vector2 muzleRot = muzle.rotation.eulerAngles;
+        //muzleRot = new Vector2(muzle.rotation.x, muzle.rotation.y + 90);
         Transform cloneMuzleFlash = (Transform)Instantiate(muzleFlashPrefab, muzle.position, muzle.rotation); //Quaternion.Euler(muzleRot));
 
         float size = Random.Range(1.6f, 1.9f);
