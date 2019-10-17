@@ -8,6 +8,8 @@ public class GameMaster : MonoBehaviour
 
     public Transform playerPrefab;
     public Transform spawnPoint;
+    public int spawnDelay = 1;
+    public Transform spawnPrefab;
 
     void Start()
     {
@@ -17,15 +19,18 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void RespawnPlayer()
+    public IEnumerator RespawnPlayer()
     {
+        Debug.Log("TODO: Add wait for spawn sound");
+        yield return new WaitForSeconds(spawnDelay);
+
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-        Debug.Log("TODO: ADD Spawn Particles");
+        Instantiate(spawnPrefab, spawnPoint.position, spawnPoint.rotation);
     }
 
     public static void KillPlayer(Player player)
     {
         Destroy(player.gameObject);
-        gm.RespawnPlayer();
+        gm.StartCoroutine (gm.RespawnPlayer());
     }
 }
