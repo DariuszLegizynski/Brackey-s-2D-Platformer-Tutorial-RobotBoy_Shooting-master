@@ -9,10 +9,15 @@ public class GameMaster : MonoBehaviour
     public Transform playerPrefab;
     public Transform spawnPoint;
     public int spawnDelay = 1;
-    public Transform spawnPrefab;
+    public GameObject spawnPrefab;
+
+    //public AudioClip respawnAudio;
+    public AudioSource audioSource;
 
     void Start()
     {
+        //audioSource.clip = respawnAudio;
+
         if (gm == null)
         {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
@@ -21,11 +26,12 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator RespawnPlayer()
     {
-        Debug.Log("TODO: Add wait for spawn sound");
         yield return new WaitForSeconds(spawnDelay);
+        audioSource.Play();
 
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-        Instantiate(spawnPrefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject cloneSpawnParticle = Instantiate(spawnPrefab, spawnPoint.position, spawnPoint.rotation);
+        Destroy(cloneSpawnParticle, 3f);
     }
 
     public static void KillPlayer(Player player)

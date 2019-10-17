@@ -91,10 +91,12 @@ public class WeaponController : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
 
-            Instantiate(hitEffect, hitInfo.point, Quaternion.identity);
+            GameObject cloneHitEffect = Instantiate(hitEffect, hitInfo.point, Quaternion.identity);
 
             lineRenderer.SetPosition(0, muzle.position);
             lineRenderer.SetPosition(1, hitInfo.point);
+
+            Destroy(cloneHitEffect.gameObject, 1.5f);
         }
 
         else
@@ -128,8 +130,10 @@ public class WeaponController : MonoBehaviour
         cloneMuzleFlash.transform.localScale = new Vector3(size, size / 2, size);
         Destroy(cloneMuzleFlash.gameObject, 0.02f);
 
-        Instantiate(weaponSmokePrefab, transform.position, transform.rotation);
+        GameObject cloneWeaponSmokePrefab = Instantiate(weaponSmokePrefab, transform.position, transform.rotation);
+        Destroy(cloneWeaponSmokePrefab.gameObject, 5f);
 
-        Instantiate(muzzleSmokePrefab, muzle.position, muzle.rotation);
+        GameObject cloneMuzzleSmokePrefab = Instantiate(muzzleSmokePrefab, muzle.position, muzle.rotation);
+        Destroy(cloneMuzzleSmokePrefab.gameObject, 5f);
     }
 }
