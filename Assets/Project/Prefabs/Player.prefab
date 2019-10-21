@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxColliderStand: {fileID: 5001124433721627409}
   capsuleColliderCrouch: {fileID: 5001124433721627421}
-  moveSpeed: 3
+  moveSpeed: 5
   jumpSpeed: 4.5
   whatIsGround:
     serializedVersion: 2
@@ -188,6 +188,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1046981693, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
+      propertyPath: whatToHit.m_Bits
+      value: 7731
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
