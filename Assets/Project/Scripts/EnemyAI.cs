@@ -5,6 +5,8 @@ using Pathfinding;
 
 public class EnemyAI : MonoBehaviour
 {
+    //TODO: Find error for sprite changing view directions
+
     public Transform target;
 
     public float speed = 200f;
