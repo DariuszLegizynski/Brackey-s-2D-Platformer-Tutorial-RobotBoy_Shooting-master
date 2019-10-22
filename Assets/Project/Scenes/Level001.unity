@@ -1633,6 +1633,7 @@ GameObject:
   - component: {fileID: 726923760}
   - component: {fileID: 726923759}
   - component: {fileID: 726923761}
+  - component: {fileID: 726923762}
   m_Layer: 12
   m_Name: EnemyPirate (1)
   m_TagString: Enemy
@@ -1684,13 +1685,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726923758}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9a490b3c7d01004a81eed2fa089b5c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 190401369}
   speed: 50
+  nextWaypointDistance: 3
+  enemyGFX: {fileID: 1282138282}
+--- !u!114 &726923762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726923758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba78c1a9f534de54b920d13f1d8175c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 190401369}
+  speed: 300
   nextWaypointDistance: 3
   enemyGFX: {fileID: 1282138282}
 --- !u!114 &726923763

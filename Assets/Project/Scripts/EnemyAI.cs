@@ -78,7 +78,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * speed * Time.deltaTime;
+        Vector2 force = direction * speed * Time.fixedDeltaTime;
 
         rb.AddForce(force);
 
@@ -119,9 +119,6 @@ public class EnemyAI : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(UpdatePath());
         }
-
-        //if (seeker.IsDone())
-        //    seeker.StartPath(rb.position, target.position, OnPathComplete);
     }
 
     void OnPathComplete(Path p)
