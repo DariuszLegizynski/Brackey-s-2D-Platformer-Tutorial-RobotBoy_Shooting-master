@@ -6,7 +6,7 @@ public class WeaponController : MonoBehaviour
 {
     public float fireRate = 0f;
     //for future use
-    //public int ammoRate = 0;
+    //TODO: public int ammoRate = 0;
     public int damage = 10;
     public LayerMask whatToHit;
     public LineRenderer lineRenderer;
@@ -15,9 +15,9 @@ public class WeaponController : MonoBehaviour
 
     private float timeToFire = 0;
 
-    public Transform muzle;
+    public Transform muzzle;
     public GameObject hitEffect;
-    public Transform muzleFlashPrefab;
+    public Transform muzzleFlashPrefab;
     public GameObject weaponSmokePrefab;
     public GameObject muzzleSmokePrefab;
 
@@ -39,7 +39,7 @@ public class WeaponController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Debug.Log("ifReloaded is " + ifReloaded);
-                //Play sound "Gun Aim"
+                //TODO: Play sound "Gun Aim"
             }
 
             else if (Input.GetKeyUp(KeyCode.D) && ifReloaded == true)
@@ -51,14 +51,14 @@ public class WeaponController : MonoBehaviour
 
             else if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
             {
-                //PlaySound.EmptyMagazine("Click");
+                //TODO: PlaySound.EmptyMagazine("Click");
                 Debug.Log("Reload needed!");
             }
 
             /*
             else
             {
-                //Play sound. no more aiming
+                //TODO: Play sound. no more aiming
                 Debug.Log("Not aiming anymore");
             }
             */
@@ -77,9 +77,9 @@ public class WeaponController : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        Vector2 muzlePos = new Vector2(muzle.transform.position.x, muzle.transform.position.y);
+        Vector2 muzzlePos = new Vector2(muzzle.transform.position.x, muzzle.transform.position.y);
 
-        RaycastHit2D hitInfo = Physics2D.Raycast(muzlePos, muzle.transform.up, 100f, whatToHit);
+        RaycastHit2D hitInfo = Physics2D.Raycast(muzzlePos, muzzle.transform.up, 100f, whatToHit);
         Debug.LogError("PifPaf!");
 
         if (hitInfo)
@@ -95,7 +95,7 @@ public class WeaponController : MonoBehaviour
 
             GameObject cloneHitEffect = Instantiate(hitEffect, hitInfo.point, Quaternion.identity);
 
-            lineRenderer.SetPosition(0, muzle.position);
+            lineRenderer.SetPosition(0, muzzle.position);
             lineRenderer.SetPosition(1, hitInfo.point);
 
             Destroy(cloneHitEffect.gameObject, 1.5f);
@@ -103,9 +103,9 @@ public class WeaponController : MonoBehaviour
 
         else
         {
-            Debug.DrawRay(muzlePos, muzle.transform.up * 100f, Color.yellow);
-            lineRenderer.SetPosition(0, muzle.position);
-            lineRenderer.SetPosition(1, muzle.transform.up * 100f);
+            Debug.DrawRay(muzzlePos, muzzle.transform.up * 100f, Color.yellow);
+            lineRenderer.SetPosition(0, muzzle.position);
+            lineRenderer.SetPosition(1, muzzle.transform.up * 100f);
         }
 
         lineRenderer.enabled = true;
@@ -119,14 +119,16 @@ public class WeaponController : MonoBehaviour
     void Reload()
     {
         ifReloaded = true;
+
+        //TODO: Reload animation
         Debug.Log("Reloading");
     }
 
     void WeaponFXEffects()
     {
-        Vector2 muzleRot = muzle.rotation.eulerAngles;
-        muzleRot = new Vector2(muzle.rotation.x, muzle.rotation.y + 90);
-        Transform cloneMuzleFlash = (Transform)Instantiate(muzleFlashPrefab, muzle.position, muzle.rotation); //Quaternion.Euler(muzleRot));
+        Vector2 muzzleRot = muzzle.rotation.eulerAngles;
+        muzzleRot = new Vector2(muzzle.rotation.x, muzzle.rotation.y + 90);
+        Transform cloneMuzleFlash = (Transform)Instantiate(muzzleFlashPrefab, muzzle.position, muzzle.rotation); //Quaternion.Euler(muzleRot));
 
         float size = Random.Range(1.6f, 1.9f);
         cloneMuzleFlash.transform.localScale = new Vector3(size, size / 2, size);
@@ -135,7 +137,7 @@ public class WeaponController : MonoBehaviour
         GameObject cloneWeaponSmokePrefab = Instantiate(weaponSmokePrefab, transform.position, transform.rotation);
         Destroy(cloneWeaponSmokePrefab.gameObject, 5f);
 
-        GameObject cloneMuzzleSmokePrefab = Instantiate(muzzleSmokePrefab, muzle.position, muzle.rotation);
+        GameObject cloneMuzzleSmokePrefab = Instantiate(muzzleSmokePrefab, muzzle.position, muzzle.rotation);
         Destroy(cloneMuzzleSmokePrefab.gameObject, 5f);
     }
 }

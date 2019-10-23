@@ -24,12 +24,28 @@ public class Player : MonoBehaviour {
     [System.Serializable]
     public class PlayerStats
     {
-        public int Health = 100;
+        public int maxHealth = 100;
+        private int _currentHealth;
+
+        public int currentHealth
+        {
+            get { return _currentHealth; }
+            set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
+        }
+
+       public void Init()
+        {
+            currentHealth = maxHealth;
+        }
+
     }
 
     public PlayerStats playerStats = new PlayerStats();
 
     public int fallDistance = -20;
+
+    [SerializeField]
+    private StatusIndicator statusIndicatior;
 
 	// Use this for initialization
 	void Start ()
@@ -40,6 +56,18 @@ public class Player : MonoBehaviour {
         myRigidbody2D = GetComponentInChildren<Rigidbody2D>();
 
         anim = GetComponentInChildren<Animator>();
+
+        playerStats.Init();
+
+        if(statusIndicatior == null)
+        {
+            Debug.LogError("PLAYER: no status indicator reference found");
+        }
+
+        else
+        {
+            statusIndicatior.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
+        }
 	}
 
     // Update is called once per frame
@@ -130,20 +158,22 @@ public class Player : MonoBehaviour {
 
     public void DamagePlayer(int damage)
     {
-        playerStats.Health -= damage;
+        playerStats.currentHealth -= damage;
 
-        if(playerStats.Health <= 0)
+        if(playerStats.currentHealth <= 0)
         {
             Debug.Log("PLAYER KILLED!");
             GameMaster.KillPlayer(this);
         }
+
+        statusIndicatior.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
     }
 
     void Fall()
     {
         if (transform.position.y <= fallDistance)
         {
-            DamagePlayer(playerStats.Health);
+            DamagePlayer(playerStats.maxHealth);
         }
     }
 }

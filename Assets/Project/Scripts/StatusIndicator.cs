@@ -1,0 +1,26 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class StatusIndicator : MonoBehaviour
+{
+    [SerializeField]
+    private RectTransform healthBarRect;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if(healthBarRect == null)
+        {
+            Debug.Log("STATUS INDICATOR: no health bar obect reference!");
+        }
+    }
+
+    public void SetHealth(int _cur, int _max)
+    {
+        float _value = (float) _cur / _max;
+
+        healthBarRect.localScale = new Vector3(_value, healthBarRect.localScale.y, healthBarRect.localScale.z);
+    }
+}
