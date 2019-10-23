@@ -6,18 +6,18 @@ using UnityEngine.UI;
 public class StatusIndicator : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform healthBarRect;
+    RectTransform healthBarRect;
 
     // Start is called before the first frame update
     void Start()
     {
         if(healthBarRect == null)
         {
-            Debug.Log("STATUS INDICATOR: no health bar obect reference!");
+            Debug.LogError("STATUS INDICATOR: no health bar obect reference!");
         }
     }
 
-    public void SetHealth(int _cur, int _max)
+    public void SetHealth(int _cur, int _max) //the _ is to show that the variable is only valid inside the given method
     {
         float _value = (float) _cur / _max;
 
