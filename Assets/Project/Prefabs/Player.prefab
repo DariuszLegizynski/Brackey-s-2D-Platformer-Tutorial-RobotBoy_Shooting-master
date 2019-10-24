@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5001124433721627409}
   - component: {fileID: 5001124433721627421}
   - component: {fileID: 5001124433721627420}
+  - component: {fileID: 89175623}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -119,9 +120,24 @@ MonoBehaviour:
     m_Bits: 2048
   groundCheck: {fileID: 2559349823819842646}
   groundDistance: 0.1
-  playerStats:
-    Health: 100
   fallDistance: -20
+  findPlayerStats: {fileID: 0}
+  playerStats:
+    maxHealth: 100
+  statusIndicator: {fileID: 89175623}
+--- !u!114 &89175623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5001124433721627408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5dce6a9f9d0f224fbc83132ac0d2c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarRect: {fileID: 0}
 --- !u!1001 &2559349824039084201
 PrefabInstance:
   m_ObjectHideFlags: 0

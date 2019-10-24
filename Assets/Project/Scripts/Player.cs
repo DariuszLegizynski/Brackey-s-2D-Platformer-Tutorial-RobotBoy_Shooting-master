@@ -21,31 +21,33 @@ public class Player : MonoBehaviour {
     public Transform groundCheck;
     public float groundDistance;
 
+    public int fallDistance = -20;
+
     [System.Serializable]
     public class PlayerStats
     {
         public int maxHealth = 100;
-        private int _currentHealth;
 
+        private int _currentHealth;
         public int currentHealth
         {
             get { return _currentHealth; }
             set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
         }
 
-       public void Init()
+        //sets our current health (or whatever stats are used) to the max health value at the start of the game
+        public void Init()
         {
             currentHealth = maxHealth;
         }
-
     }
 
+    public GameObject findPlayerStats;
     public PlayerStats playerStats = new PlayerStats();
 
-    public int fallDistance = -20;
-
+    [Header("To acces health Bar (from MainCamera)")]
     [SerializeField]
-    private StatusIndicator statusIndicatior;
+    StatusIndicator statusIndicator;
 
 	// Use this for initialization
 	void Start ()
@@ -59,14 +61,14 @@ public class Player : MonoBehaviour {
 
         playerStats.Init();
 
-        if(statusIndicatior == null)
+        if(statusIndicator == null)
         {
             Debug.LogError("PLAYER: no status indicator reference found");
         }
 
         else
         {
-            statusIndicatior.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
+            statusIndicator.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
         }
 	}
 
@@ -166,7 +168,7 @@ public class Player : MonoBehaviour {
             GameMaster.KillPlayer(this);
         }
 
-        statusIndicatior.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
+        statusIndicator.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
     }
 
     void Fall()
