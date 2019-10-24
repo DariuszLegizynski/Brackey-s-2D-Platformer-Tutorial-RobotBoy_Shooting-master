@@ -42,7 +42,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public GameObject findPlayerStats;
     public PlayerStats playerStats = new PlayerStats();
 
     [Header("To acces health Bar (from MainCamera)")]

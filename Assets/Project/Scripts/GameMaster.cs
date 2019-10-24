@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour
 {
     //TODO: Death Animation
-    //public GameObject deathEffect;
+    public GameObject deathEffectPrefab;
 
     public static GameMaster gm;
 
@@ -39,13 +39,16 @@ public class GameMaster : MonoBehaviour
 
     public static void KillPlayer(Player player)
     {
+        GameObject clonedeathEffectPrefab = Instantiate(gm.deathEffectPrefab, gm.transform.position, gm.transform.rotation);
+        Destroy(clonedeathEffectPrefab.gameObject, 3f);
         Destroy(player.gameObject);
         gm.StartCoroutine (gm.RespawnPlayer());
     }
 
     public static void KillEnemy(EnemyBehaviour enemy)
     {
-        //Instantiate(deathEffect, transform.position, Quaternion.identity);
+        GameObject clonedeathEffectPrefab = Instantiate(gm.deathEffectPrefab, gm.transform.position, gm.transform.rotation);
+        Destroy(clonedeathEffectPrefab.gameObject, 3f);
         Destroy(enemy.gameObject);
     }
 }

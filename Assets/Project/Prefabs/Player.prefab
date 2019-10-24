@@ -121,7 +121,6 @@ MonoBehaviour:
   groundCheck: {fileID: 2559349823819842646}
   groundDistance: 0.1
   fallDistance: -20
-  findPlayerStats: {fileID: 0}
   playerStats:
     maxHealth: 100
   statusIndicator: {fileID: 89175623}
@@ -209,11 +208,31 @@ PrefabInstance:
       propertyPath: whatToHit.m_Bits
       value: 7731
       objectReference: {fileID: 0}
+    - target: {fileID: 1046981693, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
+      propertyPath: muzzle
+      value: 
+      objectReference: {fileID: 7684840533108010266}
+    - target: {fileID: 1046981693, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
+      propertyPath: bloodHitEffectPrefab
+      value: 
+      objectReference: {fileID: 167298919012456168, guid: 9eac8aa0d27a0834dbc52257e60ea5cf,
+        type: 3}
+    - target: {fileID: 1046981693, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
+      propertyPath: muzzleFlashPrefab
+      value: 
+      objectReference: {fileID: 580311359721038193, guid: ccbf9912169806c47815633ab67691f8,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
 --- !u!4 &7134286031812040045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4649597463122867652, guid: 5cd94ddc84768bd44950a190ae764e39,
+    type: 3}
+  m_PrefabInstance: {fileID: 2559349824039084201}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7684840533108010266 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5269962141479456179, guid: 5cd94ddc84768bd44950a190ae764e39,
     type: 3}
   m_PrefabInstance: {fileID: 2559349824039084201}
   m_PrefabAsset: {fileID: 0}

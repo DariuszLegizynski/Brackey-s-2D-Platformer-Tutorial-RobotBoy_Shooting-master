@@ -17,6 +17,7 @@ public class WeaponController : MonoBehaviour
 
     public Transform muzzle;
     public GameObject hitEffect;
+    public GameObject bloodHitEffectPrefab;
     public Transform muzzleFlashPrefab;
     public GameObject weaponSmokePrefab;
     public GameObject muzzleSmokePrefab;
@@ -91,14 +92,18 @@ public class WeaponController : MonoBehaviour
             if(enemy != null)
             {
                 enemy.TakeDamage(damage);
+                GameObject cloneBloodHitEffect = Instantiate(bloodHitEffectPrefab, hitInfo.point, Quaternion.identity);
+                Destroy(cloneBloodHitEffect.gameObject, 1.5f);
             }
 
-            GameObject cloneHitEffect = Instantiate(hitEffect, hitInfo.point, Quaternion.identity);
+            else
+            {
+                GameObject cloneHitEffect = Instantiate(hitEffect, hitInfo.point, Quaternion.identity);
+                Destroy(cloneHitEffect.gameObject, 1.5f);
+            }
 
             lineRenderer.SetPosition(0, muzzle.position);
             lineRenderer.SetPosition(1, hitInfo.point);
-
-            Destroy(cloneHitEffect.gameObject, 1.5f);
         }
 
         else

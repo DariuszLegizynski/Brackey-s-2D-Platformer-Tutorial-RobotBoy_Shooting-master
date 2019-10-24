@@ -65,6 +65,8 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+
+
     [System.Serializable]
     public class EnemyStats
     {
