@@ -11,6 +11,11 @@ public class Player : MonoBehaviour {
     public float jumpSpeed;
 
     private Animator anim;
+    WeaponController weapon;
+
+    bool ifReloaded = true;
+    float timeToFire = 0;
+    public float fireRate = 0f;
 
     private bool grounded;
     private bool crouch = false;
@@ -76,6 +81,16 @@ public class Player : MonoBehaviour {
     {
         Movement();
 
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GunFire();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
+
         Fall();
     }
 
@@ -135,26 +150,61 @@ public class Player : MonoBehaviour {
             boxColliderStand.enabled = true;
             capsuleColliderCrouch.enabled = false;
         }
+    }
 
-        if (Input.GetKey(KeyCode.D))
+    void GunFire()
+    {
+        if (fireRate == 0)
         {
-            anim.SetBool("Aim", aim);
+            Debug.Log("Am in fire rate loop");
+
+            //if (Input.GetKey(KeyCode.D))
+            //{
+                anim.SetBool("Aim", aim);
+                //weapon.GunAim();
+                Debug.Log("ifReloaded is " + ifReloaded);
+            //}
+
+            if (Input.GetKeyUp(KeyCode.D) && ifReloaded == true)
+            {
+                StartCoroutine(weapon.Shoot());
+                Debug.Log("Am in Start Coroutine shoot");
+                weapon.WeaponFXEffects();
+                anim.SetBool("Shoot", shoot);
+                ifReloaded = false;
+            }
+
+            else if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
+            {
+                //TODO: PlaySound.EmptyMagazine("Click");
+                anim.SetBool("Shoot", !shoot);
+                Debug.Log("Reload needed!");
+            }
+            
+            /*else //if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
+            {
+                //TODO: PlaySound.EmptyMagazine("Click");
+                anim.SetBool("Shoot", !shoot);
+                Debug.Log("Reload needed!");
+            }*/
         }
 
         else
         {
-            anim.SetBool("Aim", !aim);
+            if (Input.GetKey(KeyCode.D) && Time.time > timeToFire)
+            {
+                timeToFire = Time.time + 1 / fireRate;
+                StartCoroutine(weapon.Shoot());
+                weapon.WeaponFXEffects();
+                ifReloaded = false;
+            }
         }
+    }
 
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            anim.SetBool("Shoot", shoot);
-        }
-
-        else
-        {
-            anim.SetBool("Shoot", !shoot);
-        }
+    void Reload()
+    {
+        ifReloaded = true;
+        Debug.Log("Reloaded");
     }
 
     public void DamagePlayer(int damage)

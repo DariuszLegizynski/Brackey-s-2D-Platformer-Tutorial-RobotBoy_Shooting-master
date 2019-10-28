@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    public float fireRate = 0f;
+
     //for future use
     //TODO: public int ammoRate = 0;
     public int damage = 10;
     public LayerMask whatToHit;
     public LineRenderer lineRenderer;
-
-    bool ifReloaded = true;
-
-    private float timeToFire = 0;
-
+    
     public Transform muzzle;
     public GameObject hitEffect;
     public GameObject bloodHitEffectPrefab;
@@ -22,61 +18,12 @@ public class WeaponController : MonoBehaviour
     public GameObject weaponSmokePrefab;
     public GameObject muzzleSmokePrefab;
 
-    // Update is called once per frame
-    void Update()
+    public void GunAim()
     {
-        GunFire();
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reload();
-        }
+        //TODO: Play sound "Gun Aim"
     }
 
-    void GunFire()
-    {
-        if (fireRate == 0)
-        {
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                Debug.Log("ifReloaded is " + ifReloaded);
-                //TODO: Play sound "Gun Aim"
-            }
-
-            else if (Input.GetKeyUp(KeyCode.D) && ifReloaded == true)
-            {
-                StartCoroutine(Shoot());
-                WeaponFXEffects();
-                ifReloaded = false;
-            }
-
-            else if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
-            {
-                //TODO: PlaySound.EmptyMagazine("Click");
-                Debug.Log("Reload needed!");
-            }
-
-            /*
-            else
-            {
-                //TODO: Play sound. no more aiming
-                Debug.Log("Not aiming anymore");
-            }
-            */
-        }
-
-        else
-        {
-            if (Input.GetKey(KeyCode.D) && Time.time > timeToFire)
-            {
-                timeToFire = Time.time + 1 / fireRate;
-                StartCoroutine(Shoot());
-            }
-        }
-
-    }
-
-    IEnumerator Shoot()
+    public IEnumerator Shoot()
     {
         Vector2 muzzlePos = new Vector2(muzzle.transform.position.x, muzzle.transform.position.y);
 
@@ -88,10 +35,18 @@ public class WeaponController : MonoBehaviour
             Debug.Log("We hit " + hitInfo.collider.name + " and did " + damage + " damage.");
 
             EnemyBehaviour enemy = hitInfo.transform.GetComponent<EnemyBehaviour>();
+            Player player = hitInfo.transform.GetComponent<Player>();
 
-            if(enemy != null)
+            if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                GameObject cloneBloodHitEffect = Instantiate(bloodHitEffectPrefab, hitInfo.point, Quaternion.identity);
+                Destroy(cloneBloodHitEffect.gameObject, 1.5f);
+            }
+
+            else if (player != null)
+            {
+                player.DamagePlayer(damage);
                 GameObject cloneBloodHitEffect = Instantiate(bloodHitEffectPrefab, hitInfo.point, Quaternion.identity);
                 Destroy(cloneBloodHitEffect.gameObject, 1.5f);
             }
@@ -121,15 +76,7 @@ public class WeaponController : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    void Reload()
-    {
-        ifReloaded = true;
-
-        //TODO: Reload animation
-        Debug.Log("Reloading");
-    }
-
-    void WeaponFXEffects()
+    public void WeaponFXEffects()
     {
         Vector2 muzzleRot = muzzle.rotation.eulerAngles;
         muzzleRot = new Vector2(muzzle.rotation.x, muzzle.rotation.y + 90);
