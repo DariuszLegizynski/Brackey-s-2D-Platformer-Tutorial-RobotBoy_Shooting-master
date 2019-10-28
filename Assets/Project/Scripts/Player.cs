@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     private Rigidbody2D myRigidbody2D;
     public BoxCollider2D boxColliderStand;
@@ -48,8 +49,8 @@ public class Player : MonoBehaviour {
     [SerializeField]
     StatusIndicator statusIndicator;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         //boxColliderStand = GameObject.Find("Player").GetComponent<BoxCollider2D>();
         //capsuleColliderCrouch = GameObject.Find("Player").GetComponent<CapsuleCollider2D>();
@@ -60,16 +61,20 @@ public class Player : MonoBehaviour {
 
         playerStats.Init();
 
-        if(statusIndicator == null)
+        if (statusIndicator == null)
         {
-            Debug.LogError("PLAYER: no status indicator reference found");
+            statusIndicator = GameObject.FindGameObjectWithTag("StatusIndicator").GetComponent<StatusIndicator>();
+            statusIndicator.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
         }
 
-        else
+        else if (statusIndicator != null)
         {
             statusIndicator.SetHealth(playerStats.currentHealth, playerStats.maxHealth);
         }
-	}
+
+        else
+            Debug.LogError("PLAYER: no status indicator reference found");
+    }
 
     // Update is called once per frame
     void Update()
@@ -161,7 +166,7 @@ public class Player : MonoBehaviour {
     {
         playerStats.currentHealth -= damage;
 
-        if(playerStats.currentHealth <= 0)
+        if (playerStats.currentHealth <= 0)
         {
             Debug.Log("PLAYER KILLED!");
             GameMaster.KillPlayer(this);

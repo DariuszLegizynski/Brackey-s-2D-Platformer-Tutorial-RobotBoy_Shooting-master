@@ -3071,7 +3071,7 @@ GameObject:
   - component: {fileID: 1408198624}
   m_Layer: 5
   m_Name: PlayerStats
-  m_TagString: Untagged
+  m_TagString: StatusIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5150,9 +5150,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 89175623, guid: d9e69730c2cb96f44a4b3e65de26a547, type: 3}
-      propertyPath: healthBarRect
+    - target: {fileID: 5001124433721627420, guid: d9e69730c2cb96f44a4b3e65de26a547,
+        type: 3}
+      propertyPath: statusIndicator
       value: 
-      objectReference: {fileID: 2128722719}
+      objectReference: {fileID: 1408198624}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9e69730c2cb96f44a4b3e65de26a547, type: 3}
