@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5001124433721627409}
   - component: {fileID: 5001124433721627421}
   - component: {fileID: 5001124433721627420}
-  - component: {fileID: 3501713323128369270}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -125,34 +124,6 @@ MonoBehaviour:
   playerStats:
     maxHealth: 100
   statusIndicator: {fileID: 0}
---- !u!114 &3501713323128369270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5001124433721627408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a73b87b780900cf42aa0671cec3c7cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
-  whatToHit:
-    serializedVersion: 2
-    m_Bits: 7731
-  lineRenderer: {fileID: 3777772964719581508}
-  muzzle: {fileID: 7684840533108010266}
-  hitEffect: {fileID: 7054992471080046689, guid: bc5ae85987a2bd14b952fa33979ad02c,
-    type: 3}
-  bloodHitEffectPrefab: {fileID: 167298919012456168, guid: 9eac8aa0d27a0834dbc52257e60ea5cf,
-    type: 3}
-  muzzleFlashPrefab: {fileID: 580311359721038193, guid: ccbf9912169806c47815633ab67691f8,
-    type: 3}
-  weaponSmokePrefab: {fileID: 8535730663221343539, guid: 9d699987284332140a2f128e571f6229,
-    type: 3}
-  muzzleSmokePrefab: {fileID: 5518416395781147641, guid: f2bcc7ce7dc5eaa4c8224637f16787ad,
-    type: 3}
 --- !u!1001 &2559349824039084201
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220,24 +191,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5412774597270874406, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
 --- !u!4 &7134286031812040045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4649597463122867652, guid: 5cd94ddc84768bd44950a190ae764e39,
-    type: 3}
-  m_PrefabInstance: {fileID: 2559349824039084201}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &3777772964719581508 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 1723184740063885805, guid: 5cd94ddc84768bd44950a190ae764e39,
-    type: 3}
-  m_PrefabInstance: {fileID: 2559349824039084201}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7684840533108010266 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5269962141479456179, guid: 5cd94ddc84768bd44950a190ae764e39,
     type: 3}
   m_PrefabInstance: {fileID: 2559349824039084201}
   m_PrefabAsset: {fileID: 0}

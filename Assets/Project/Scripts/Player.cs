@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         myRigidbody2D = GetComponentInChildren<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
 
-        weapon = GetComponent <WeaponController>();
+        weapon = GetComponentInChildren <WeaponController>();
 
         playerStats.Init();
 
