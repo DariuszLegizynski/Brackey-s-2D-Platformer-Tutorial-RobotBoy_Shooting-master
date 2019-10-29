@@ -167,7 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1723184740001279475}
   - component: {fileID: 1723184740001279474}
-  - component: {fileID: 1723184741007346506}
+  - component: {fileID: 6699089830811061841}
   m_Layer: 8
   m_Name: imgbin-american-civil-war-pattern-1853-enfield-rifled-musket-weapon-jkdPw2PqWX2eyWq9XyMQjtQwN
   m_TagString: Untagged
@@ -240,7 +240,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &1723184741007346506
+--- !u!114 &6699089830811061841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -252,16 +252,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73b87b780900cf42aa0671cec3c7cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 0
   damage: 10
   whatToHit:
     serializedVersion: 2
-    m_Bits: 3635
+    m_Bits: 0
   lineRenderer: {fileID: 1973149338}
-  muzle: {fileID: 0}
+  muzzle: {fileID: 6830643150061152964}
   hitEffect: {fileID: 7054992471080046689, guid: bc5ae85987a2bd14b952fa33979ad02c,
     type: 3}
-  muzleFlashPrefab: {fileID: 580311359721038193, guid: ccbf9912169806c47815633ab67691f8,
+  bloodHitEffectPrefab: {fileID: 167298919012456168, guid: 9eac8aa0d27a0834dbc52257e60ea5cf,
+    type: 3}
+  muzzleFlashPrefab: {fileID: 580311359721038193, guid: ccbf9912169806c47815633ab67691f8,
     type: 3}
   weaponSmokePrefab: {fileID: 8535730663221343539, guid: 9d699987284332140a2f128e571f6229,
     type: 3}

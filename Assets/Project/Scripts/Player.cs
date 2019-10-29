@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-
     private Rigidbody2D myRigidbody2D;
     public BoxCollider2D boxColliderStand;
     public CapsuleCollider2D capsuleColliderCrouch;
@@ -12,6 +11,11 @@ public class Player : MonoBehaviour
     public float jumpSpeed;
 
     private Animator anim;
+
+    WeaponController weapon;
+    bool ifReloaded = true;
+    private float timeToFire = 0;
+    public float fireRate = 0f;
 
     private bool grounded;
     private bool crouch = false;
@@ -56,8 +60,9 @@ public class Player : MonoBehaviour
         //capsuleColliderCrouch = GameObject.Find("Player").GetComponent<CapsuleCollider2D>();
 
         myRigidbody2D = GetComponentInChildren<Rigidbody2D>();
-
         anim = GetComponentInChildren<Animator>();
+
+        weapon = GetComponent <WeaponController>();
 
         playerStats.Init();
 
@@ -82,6 +87,10 @@ public class Player : MonoBehaviour
         Movement();
 
         Fall();
+
+        GunFire();
+
+        Reload();
     }
 
     void Movement()
@@ -159,6 +168,59 @@ public class Player : MonoBehaviour
         else
         {
             anim.SetBool("Shoot", !shoot);
+        }
+    }
+
+    void GunFire()
+    {
+        if (fireRate == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                Debug.Log("ifReloaded is " + ifReloaded);
+                //TODO: Play sound "Gun Aim"
+            }
+
+            else if (Input.GetKeyUp(KeyCode.D) && ifReloaded == true)
+            {
+                weapon.GunFire();
+                weapon.WeaponFXEffects();
+                ifReloaded = false;
+            }
+
+            else if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
+            {
+                //TODO: PlaySound.EmptyMagazine("Click");
+                Debug.Log("Reload needed!");
+            }
+
+            /*
+            else
+            {
+                //TODO: Play sound. no more aiming
+                Debug.Log("Not aiming anymore");
+            }
+            */
+        }
+
+        else
+        {
+            if (Input.GetKey(KeyCode.D) && Time.time > timeToFire)
+            {
+                timeToFire = Time.time + 1 / fireRate;
+                weapon.GunFire();
+            }
+        }
+    }
+
+    void Reload()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ifReloaded = true;
+
+            //TODO: Reload animation
+            Debug.Log("Reloading");
         }
     }
 
