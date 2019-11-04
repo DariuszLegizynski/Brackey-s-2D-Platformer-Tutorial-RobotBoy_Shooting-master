@@ -9,8 +9,12 @@ public class EnemyAI : MonoBehaviour
 
     public Transform target;
 
+    private Animator anim;
+
+    private bool shoot = false;
     public float speed = 200f;
     public float nextWaypointDistance = 3f;
+    public float attackRange;
 
     public Transform enemyGFX;
 
@@ -25,6 +29,7 @@ public class EnemyAI : MonoBehaviour
     //caching
     Seeker seeker;
     Rigidbody2D rb;
+    WeaponController weapon;
 
     bool searchingForPlayer = false;
 
@@ -33,8 +38,9 @@ public class EnemyAI : MonoBehaviour
     {
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+        weapon = GetComponentInChildren<WeaponController>();
 
-        if(target == null)
+        if (target == null)
         {
             if (!searchingForPlayer)
             {
@@ -54,6 +60,21 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        /*
+        float dist = Vector3.Distance(transform.position, target.transform.position);
+
+        if (dist <= attackRange)
+        {
+            if (weapon.CanShoot())
+                weapon.GunFire();
+        }
+
+        else
+        {
+            ChaseTarget();
+        }
+        */
+
         if (target == null)
         {
             if (!searchingForPlayer)
@@ -85,10 +106,19 @@ public class EnemyAI : MonoBehaviour
         rb.AddForce(force);
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+        float playerDist = Vector2.Distance(transform.position, target.transform.position);
 
-        if(distance < nextWaypointDistance)
+        if (distance < nextWaypointDistance)
         {
             currentWaypoint++;
+
+            if (playerDist <= attackRange)
+            {
+                weapon.GunFire();
+                weapon.WeaponFXEffects();
+                anim.SetBool("Shoot", shoot);
+
+            }
         }
 
         if (force.x >= 0.01f)

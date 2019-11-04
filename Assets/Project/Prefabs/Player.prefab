@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5001124433721627409}
   - component: {fileID: 5001124433721627421}
   - component: {fileID: 5001124433721627420}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,6 +191,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5412774597270874406, guid: 5cd94ddc84768bd44950a190ae764e39,
+        type: 3}
+      propertyPath: muzzleFlashPrefab
+      value: 
+      objectReference: {fileID: 580311359721038194, guid: ccbf9912169806c47815633ab67691f8,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
 --- !u!4 &7134286031812040045 stripped

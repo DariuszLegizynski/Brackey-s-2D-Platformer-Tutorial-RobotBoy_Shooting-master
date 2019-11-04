@@ -13,7 +13,7 @@ public class WeaponController : MonoBehaviour
     public Transform muzzle;
     public GameObject hitEffect;
     public GameObject bloodHitEffectPrefab;
-    public Transform muzzleFlashPrefab;
+    public GameObject muzzleFlashPrefab;
     public GameObject weaponSmokePrefab;
     public GameObject muzzleSmokePrefab;
 
@@ -35,9 +35,18 @@ public class WeaponController : MonoBehaviour
 
             EnemyBehaviour enemy = hitInfo.transform.GetComponent<EnemyBehaviour>();
 
-            if(enemy != null)
+            Player player = hitInfo.transform.GetComponent<Player>();
+
+            if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                GameObject cloneBloodHitEffect = Instantiate(bloodHitEffectPrefab, hitInfo.point, Quaternion.identity);
+                Destroy(cloneBloodHitEffect.gameObject, 1.5f);
+            }
+
+            else if (player != null)
+            {
+                player.DamagePlayer(damage);
                 GameObject cloneBloodHitEffect = Instantiate(bloodHitEffectPrefab, hitInfo.point, Quaternion.identity);
                 Destroy(cloneBloodHitEffect.gameObject, 1.5f);
             }
@@ -70,8 +79,8 @@ public class WeaponController : MonoBehaviour
     public void WeaponFXEffects()
     {
         Vector2 muzzleRot = muzzle.rotation.eulerAngles;
-        muzzleRot = new Vector2(muzzle.rotation.x, muzzle.rotation.y + 90);
-        Transform cloneMuzleFlash = (Transform)Instantiate(muzzleFlashPrefab, muzzle.position, muzzle.rotation); //Quaternion.Euler(muzleRot));
+        muzzleRot = new Vector2(muzzle.rotation.x, muzzle.rotation.y);
+        GameObject cloneMuzleFlash = Instantiate(muzzleFlashPrefab, muzzle.position, muzzle.rotation);  //Quaternion.Euler(muzzleRot));
 
         float size = Random.Range(1.6f, 1.9f);
         cloneMuzleFlash.transform.localScale = new Vector3(size, size / 2, size);

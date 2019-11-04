@@ -1608,7 +1608,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 190401369}
   speed: 50
-  nextWaypointDistance: 3
+  nextWaypointDistance: 5
+  attackRange: 5
   enemyGFX: {fileID: 1282138282}
 --- !u!114 &726923762
 MonoBehaviour:
@@ -1661,7 +1662,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726923758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.07, y: 0.06, z: 1}
+  m_LocalPosition: {x: -11.32, y: 0.06, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1282138282}

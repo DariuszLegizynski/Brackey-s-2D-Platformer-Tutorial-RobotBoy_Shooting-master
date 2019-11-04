@@ -255,7 +255,7 @@ MonoBehaviour:
   damage: 10
   whatToHit:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 7729
   lineRenderer: {fileID: 1973149338}
   muzzle: {fileID: 6830643150061152964}
   hitEffect: {fileID: 7054992471080046689, guid: bc5ae85987a2bd14b952fa33979ad02c,
