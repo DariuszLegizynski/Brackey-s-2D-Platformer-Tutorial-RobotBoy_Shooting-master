@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     private Animator anim;
 
     private bool shoot = false;
+    bool ifReloaded = true;
     public float speed = 200f;
     public float nextWaypointDistance = 3f;
     public float attackRange;
@@ -86,10 +87,16 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
+        Movement();
+    }
+
+    void Movement()
+    {
+        //Pathfinding
         if (path == null)
             return;
 
-        if(currentWaypoint >= path.vectorPath.Count)
+        if (currentWaypoint >= path.vectorPath.Count)
         {
             reachedEndOfPath = true;
             return;
@@ -100,33 +107,44 @@ public class EnemyAI : MonoBehaviour
             reachedEndOfPath = false;
         }
 
+        //Add force to the found pathway
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * speed * Time.fixedDeltaTime;
 
         rb.AddForce(force);
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         float playerDist = Vector2.Distance(transform.position, target.transform.position);
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
         if (distance < nextWaypointDistance)
         {
             currentWaypoint++;
 
-            if (playerDist <= attackRange)
+            anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
+            if (playerDist <= attackRange && ifReloaded == true)
             {
                 weapon.GunFire();
                 weapon.WeaponFXEffects();
                 anim.SetBool("Shoot", shoot);
+                ifReloaded = false;
+            }
 
+            else if (ifReloaded == false)
+            {
+                //TODO: Reload animation
+                Debug.Log("Reloading");
+                ifReloaded = true;
             }
         }
 
-        if (force.x >= 0.01f)
+        if (rb.velocity.x >= 0.01f)
         {
             enemyGFX.localScale = new Vector3(1.5f, 1.5f, 1f);
+
         }
 
-        else if (force.x < 0.01f)
+        else if (rb.velocity.x < 0.01f)
         {
             enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 1f);
         }
