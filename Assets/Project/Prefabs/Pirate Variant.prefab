@@ -13,7 +13,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 9aa545512a11e2b489c1386971c5ac7f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -112,6 +112,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 580311359721038194, guid: ccbf9912169806c47815633ab67691f8,
         type: 3}
+    - target: {fileID: 5262205015017606727, guid: 1248464f596875b408f7357322a148cb,
+        type: 3}
+      propertyPath: shootRate
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1248464f596875b408f7357322a148cb, type: 3}
 --- !u!1001 &8214723324762879738

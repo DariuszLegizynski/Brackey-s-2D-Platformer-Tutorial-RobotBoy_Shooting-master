@@ -10,10 +10,9 @@ public class EnemyAI : MonoBehaviour
     public Transform target;
 
     private Animator anim;
+    bool shoot = true;
 
-    private bool shoot = false;
-    bool ifReloaded = true;
-    public float speed = 200f;
+    public float walkSpeed = 200f;
     public float nextWaypointDistance = 3f;
     public float attackRange;
 
@@ -61,21 +60,6 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*
-        float dist = Vector3.Distance(transform.position, target.transform.position);
-
-        if (dist <= attackRange)
-        {
-            if (weapon.CanShoot())
-                weapon.GunFire();
-        }
-
-        else
-        {
-            ChaseTarget();
-        }
-        */
-
         if (target == null)
         {
             if (!searchingForPlayer)
@@ -84,7 +68,7 @@ public class EnemyAI : MonoBehaviour
                 StartCoroutine(SearchForPlayer());
             }
 
-            return;
+        return;
         }
 
         Movement();
@@ -109,7 +93,7 @@ public class EnemyAI : MonoBehaviour
 
         //Add force to the found pathway
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * speed * Time.fixedDeltaTime;
+        Vector2 force = direction * walkSpeed * Time.fixedDeltaTime;
 
         rb.AddForce(force);
 
@@ -120,34 +104,42 @@ public class EnemyAI : MonoBehaviour
         {
             currentWaypoint++;
 
-            anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+            Debug.LogWarning("velocity is: " + rb.velocity.x);
 
-            if (playerDist <= attackRange && ifReloaded == true)
+            if (playerDist <= attackRange)
             {
-                weapon.GunFire();
-                weapon.WeaponFXEffects();
-                anim.SetBool("Shoot", shoot);
-                ifReloaded = false;
-            }
+                //anim.SetBool("Shoot", shoot = true);
 
-            else if (ifReloaded == false)
-            {
-                //TODO: Reload animation
-                Debug.Log("Reloading");
-                ifReloaded = true;
+                if (weapon.CanShoot())
+                {
+                    weapon.GunFire();
+                    weapon.WeaponFXEffects();
+                }
+
+                else
+                    weapon.Reload();
+                //here, after shooting will be a function to chase the target and engage it in melee
+                /* Not sure if wanna use. If the enemy cant shoot (becouse he shot already, than he either will reload or go into melee
+                 * else
+                {
+                    //TODO: Reload animation
+                    Debug.Log("Reloading");
+                }*/
             }
         }
 
         if (rb.velocity.x >= 0.01f)
         {
             enemyGFX.localScale = new Vector3(1.5f, 1.5f, 1f);
-
         }
 
         else if (rb.velocity.x < 0.01f)
         {
             enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 1f);
         }
+
+        //anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        //Debug.LogWarning("velocity Mathf is: " + rb.velocity.x);
     }
 
     IEnumerator UpdatePath()

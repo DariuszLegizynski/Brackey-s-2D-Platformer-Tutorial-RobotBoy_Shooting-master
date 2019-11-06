@@ -17,6 +17,10 @@ public class WeaponController : MonoBehaviour
     public GameObject weaponSmokePrefab;
     public GameObject muzzleSmokePrefab;
 
+    public float shootRate;
+    float lastShootTime;
+    bool isReloaded = true;
+
     public void GunFire()
     {
         StartCoroutine(Shoot());
@@ -24,6 +28,9 @@ public class WeaponController : MonoBehaviour
 
     IEnumerator Shoot()
     {
+        lastShootTime = Time.time;
+        isReloaded = false;
+
         Vector2 muzzlePos = new Vector2(muzzle.transform.position.x, muzzle.transform.position.y);
 
         RaycastHit2D hitInfo = Physics2D.Raycast(muzzlePos, muzzle.transform.up, 100f, whatToHit);
@@ -91,5 +98,23 @@ public class WeaponController : MonoBehaviour
 
         GameObject cloneMuzzleSmokePrefab = Instantiate(muzzleSmokePrefab, muzzle.position, muzzle.rotation);
         Destroy(cloneMuzzleSmokePrefab.gameObject, 5f);
+    }
+
+    public bool CanShoot()
+    {
+        Debug.Log("isReloaded2: " + shootRate);
+
+        if (Time.time - lastShootTime >= shootRate)
+        {
+            if (isReloaded == true)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void Reload()
+    {
+        isReloaded = true;
     }
 }

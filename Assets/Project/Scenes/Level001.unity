@@ -1607,7 +1607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 190401369}
-  speed: 50
+  walkSpeed: 200
   nextWaypointDistance: 5
   attackRange: 5
   enemyGFX: {fileID: 1282138282}

@@ -114,7 +114,6 @@ MonoBehaviour:
   capsuleColliderCrouch: {fileID: 5001124433721627421}
   moveSpeed: 5
   jumpSpeed: 4.5
-  fireRate: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 2048
@@ -197,6 +196,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 580311359721038194, guid: ccbf9912169806c47815633ab67691f8,
         type: 3}
+    - target: {fileID: 5412774597270874406, guid: 5cd94ddc84768bd44950a190ae764e39,
+        type: 3}
+      propertyPath: shootRate
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd94ddc84768bd44950a190ae764e39, type: 3}
 --- !u!4 &7134286031812040045 stripped

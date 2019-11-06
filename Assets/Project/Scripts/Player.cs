@@ -13,9 +13,6 @@ public class Player : MonoBehaviour
     private Animator anim;
 
     WeaponController weapon;
-    bool ifReloaded = true;
-    private float timeToFire = 0;
-    public float fireRate = 0f;
 
     private bool grounded;
     private bool crouch = false;
@@ -173,51 +170,41 @@ public class Player : MonoBehaviour
 
     void GunFire()
     {
-        if (fireRate == 0)
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                Debug.Log("ifReloaded is " + ifReloaded);
-                //TODO: Play sound "Gun Aim"
-            }
+            Debug.Log("Aiming");
+            //TODO: Play sound "Gun Aim"
+        }
 
-            else if (Input.GetKeyUp(KeyCode.D) && ifReloaded == true)
+        else if (Input.GetKeyUp(KeyCode.D))
+        {
+            if (weapon.CanShoot())
             {
                 weapon.GunFire();
                 weapon.WeaponFXEffects();
-                ifReloaded = false;
             }
 
-            else if ((Input.GetKeyUp(KeyCode.D) && ifReloaded == false))
+            else
             {
                 //TODO: PlaySound.EmptyMagazine("Click");
                 Debug.Log("Reload needed!");
             }
-
-            /*
-            else
-            {
-                //TODO: Play sound. no more aiming
-                Debug.Log("Not aiming anymore");
-            }
-            */
         }
 
+        /*
         else
         {
-            if (Input.GetKey(KeyCode.D) && Time.time > timeToFire)
-            {
-                timeToFire = Time.time + 1 / fireRate;
-                weapon.GunFire();
-            }
+            //TODO: Play sound. No more aiming
+            Debug.Log("Not aiming anymore");
         }
+        */
     }
 
     void Reload()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ifReloaded = true;
+            weapon.Reload();
 
             //TODO: Reload animation
             Debug.Log("Reloading");
