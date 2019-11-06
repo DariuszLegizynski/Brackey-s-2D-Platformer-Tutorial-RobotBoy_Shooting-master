@@ -1607,10 +1607,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 190401369}
-  walkSpeed: 200
-  nextWaypointDistance: 5
-  attackRange: 5
   enemyGFX: {fileID: 1282138282}
+  moveSpeed: 10
+  attackRange: 5
+  yPathOffset: 5
 --- !u!114 &726923762
 MonoBehaviour:
   m_ObjectHideFlags: 0

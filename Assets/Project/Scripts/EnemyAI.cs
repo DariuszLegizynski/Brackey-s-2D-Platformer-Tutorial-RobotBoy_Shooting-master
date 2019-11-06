@@ -1,33 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Pathfinding;
+using UnityEngine.AI;
+using System.Linq;
+//B using Pathfinding;
 
 public class EnemyAI : MonoBehaviour
 {
     //TODO: Find error for sprite changing view directions
 
     public Transform target;
+    public Transform enemyGFX;
+
+    List<Vector3> path;
 
     private Animator anim;
     bool shoot = true;
 
-    public float walkSpeed = 200f;
-    public float nextWaypointDistance = 3f;
+    [Header("Movement")]
+    public float moveSpeed;
     public float attackRange;
+    public float yPathOffset;
 
-    public Transform enemyGFX;
+    //Brackeys Solution
+    //public float walkSpeed = 200f;
+    //public float nextWaypointDistance = 3f;
+    //public float attackRange;
 
     //the calculated path
-    Path path;
+    //B Path path;
 
     //waypoint we are currently moving towards
-    int currentWaypoint = 0;
+    //B int currentWaypoint = 0;
 
-    bool reachedEndOfPath = false;
+    //B bool reachedEndOfPath = false;
 
     //caching
-    Seeker seeker;
+    //B Seeker seeker;
     Rigidbody2D rb;
     WeaponController weapon;
 
@@ -36,10 +45,12 @@ public class EnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        seeker = GetComponent<Seeker>();
+        //B seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponentInChildren<WeaponController>();
 
+        //B
+        /*
         if (target == null)
         {
             if (!searchingForPlayer)
@@ -49,17 +60,19 @@ public class EnemyAI : MonoBehaviour
             }
 
             return;
-        }
+        }*/
 
         // Start a new path to the target position, return the result to the OnPathComplete method
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
+        //B seeker.StartPath(transform.position, target.position, OnPathComplete);
 
-        StartCoroutine(UpdatePath());
+        //B StartCoroutine(UpdatePath());
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //B
+        /*
         if (target == null)
         {
             if (!searchingForPlayer)
@@ -69,15 +82,41 @@ public class EnemyAI : MonoBehaviour
             }
 
         return;
-        }
+        }*/
 
         Movement();
     }
 
     void Movement()
     {
+        float playerDist = Vector2.Distance(transform.position, target.transform.position);
+
+        if (playerDist <= attackRange)
+        {
+            //anim.SetBool("Shoot", shoot = true);
+
+            if (weapon.CanShoot())
+            {
+                weapon.GunFire();
+                weapon.WeaponFXEffects();
+            }
+
+            else
+                weapon.Reload();
+                //ChaseTarget();
+            
+            //here, after shooting will be a function to chase the target and engage it in melee
+            /* Not sure if wanna use. If the enemy cant shoot (becouse he shot already, than he either will reload or go into melee
+             * else
+            {
+                //TODO: Reload animation
+                Debug.Log("Reloading");
+            }*/
+        }
+
+        //B
         //Pathfinding
-        if (path == null)
+        /* if (path == null)
             return;
 
         if (currentWaypoint >= path.vectorPath.Count)
@@ -89,44 +128,23 @@ public class EnemyAI : MonoBehaviour
         else
         {
             reachedEndOfPath = false;
-        }
+        }*/
 
+        //B
+        /*
         //Add force to the found pathway
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * walkSpeed * Time.fixedDeltaTime;
 
         rb.AddForce(force);
 
-        float playerDist = Vector2.Distance(transform.position, target.transform.position);
+        
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
         if (distance < nextWaypointDistance)
         {
             currentWaypoint++;
-
-            Debug.LogWarning("velocity is: " + rb.velocity.x);
-
-            if (playerDist <= attackRange)
-            {
-                //anim.SetBool("Shoot", shoot = true);
-
-                if (weapon.CanShoot())
-                {
-                    weapon.GunFire();
-                    weapon.WeaponFXEffects();
-                }
-
-                else
-                    weapon.Reload();
-                //here, after shooting will be a function to chase the target and engage it in melee
-                /* Not sure if wanna use. If the enemy cant shoot (becouse he shot already, than he either will reload or go into melee
-                 * else
-                {
-                    //TODO: Reload animation
-                    Debug.Log("Reloading");
-                }*/
-            }
-        }
+        }*/
 
         if (rb.velocity.x >= 0.01f)
         {
@@ -140,8 +158,38 @@ public class EnemyAI : MonoBehaviour
 
         //anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         //Debug.LogWarning("velocity Mathf is: " + rb.velocity.x);
+
+        //look at target
+        Vector3 dir = (target.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+
+        transform.eulerAngles = Vector3.up * angle;
     }
 
+    void ChaseTarget()
+    {
+        if (path.Count == 0)
+            return;
+
+        //move towards the closes path
+        transform.position = Vector3.MoveTowards(transform.position, path[0] + new Vector3(0, yPathOffset, 0), moveSpeed * Time.deltaTime);
+
+        if (transform.position == path[0] + new Vector3(0, yPathOffset, 0))
+            path.RemoveAt(0);
+    }
+
+    void UpdatePath()
+    {
+        // calculate a path to our target
+        NavMeshPath navMeshPath = new NavMeshPath();
+        NavMesh.CalculatePath(transform.position, target.transform.position, NavMesh.AllAreas, navMeshPath);
+
+        // save that as a list
+        path = navMeshPath.corners.ToList();
+    }
+
+    //B
+    /*
     IEnumerator UpdatePath()
     {
         if (target == null)
@@ -188,8 +236,9 @@ public class EnemyAI : MonoBehaviour
         {
             target = sResult.transform;
             searchingForPlayer = false;
-            StartCoroutine(UpdatePath());
+            //B StartCoroutine(UpdatePath());
+            UpdatePath();
             yield return false;
         }
-    }
+    }*/
 }
