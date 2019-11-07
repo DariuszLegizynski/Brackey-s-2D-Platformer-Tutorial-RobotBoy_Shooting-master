@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     public Transform target;
 
     private Animator anim;
+    public int waitTimeForAnim = 2;
     bool shoot = true;
 
     public float walkSpeed = 200f;
@@ -39,6 +40,7 @@ public class EnemyAI : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponentInChildren<WeaponController>();
+        anim = GetComponentInChildren<Animator>();
 
         if (target == null)
         {
@@ -68,7 +70,7 @@ public class EnemyAI : MonoBehaviour
                 StartCoroutine(SearchForPlayer());
             }
 
-        return;
+            return;
         }
 
         Movement();
@@ -104,20 +106,21 @@ public class EnemyAI : MonoBehaviour
         {
             currentWaypoint++;
 
-            Debug.LogWarning("velocity is: " + rb.velocity.x);
-
             if (playerDist <= attackRange)
             {
-                //anim.SetBool("Shoot", shoot = true);
-
                 if (weapon.CanShoot())
                 {
+                    anim.SetBool("Shoot", shoot = true);
                     weapon.GunFire();
                     weapon.WeaponFXEffects();
+                    //anim.SetBool("Shoot", shoot = false);
                 }
 
                 else
-                    weapon.Reload();
+                    MeleeAttack();
+
+
+                //weapon.Reload();
                 //here, after shooting will be a function to chase the target and engage it in melee
                 /* Not sure if wanna use. If the enemy cant shoot (becouse he shot already, than he either will reload or go into melee
                  * else
@@ -128,6 +131,8 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
         if (rb.velocity.x >= 0.01f)
         {
             enemyGFX.localScale = new Vector3(1.5f, 1.5f, 1f);
@@ -137,9 +142,6 @@ public class EnemyAI : MonoBehaviour
         {
             enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 1f);
         }
-
-        //anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-        //Debug.LogWarning("velocity Mathf is: " + rb.velocity.x);
     }
 
     IEnumerator UpdatePath()
@@ -177,7 +179,7 @@ public class EnemyAI : MonoBehaviour
     {
         GameObject sResult = GameObject.FindGameObjectWithTag("Player");
 
-        if(sResult == null)
+        if (sResult == null)
         {
             yield return new WaitForSeconds(0.5f);
 
@@ -191,5 +193,11 @@ public class EnemyAI : MonoBehaviour
             StartCoroutine(UpdatePath());
             yield return false;
         }
+    }
+
+    void MeleeAttack()
+    {
+        //TODO: Melee Attack
+        Debug.LogWarning("Melee ATTACK!");
     }
 }

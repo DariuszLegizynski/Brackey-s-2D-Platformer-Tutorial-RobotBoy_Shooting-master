@@ -1607,6 +1607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 190401369}
+  waitTimeForAnim: 1
   walkSpeed: 200
   nextWaypointDistance: 5
   attackRange: 5
@@ -5091,11 +5092,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5001124433721627408, guid: d9e69730c2cb96f44a4b3e65de26a547,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 5001124433721627423, guid: d9e69730c2cb96f44a4b3e65de26a547,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5150,6 +5146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5001124433721627408, guid: d9e69730c2cb96f44a4b3e65de26a547,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5001124433721627420, guid: d9e69730c2cb96f44a4b3e65de26a547,
         type: 3}
