@@ -11,7 +11,6 @@ public class EnemyAI : MonoBehaviour
 
     private Animator anim;
     public int waitTimeForAnim = 2;
-    bool shoot = true;
 
     public float walkSpeed = 200f;
     public float nextWaypointDistance = 3f;
@@ -26,6 +25,8 @@ public class EnemyAI : MonoBehaviour
     int currentWaypoint = 0;
 
     bool reachedEndOfPath = false;
+    bool shotAnimationReady = false;
+
 
     //caching
     Seeker seeker;
@@ -95,9 +96,13 @@ public class EnemyAI : MonoBehaviour
 
         //Add force to the found pathway
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * walkSpeed * Time.fixedDeltaTime;
 
+        //first movement solution
+        Vector2 force = direction * walkSpeed * Time.fixedDeltaTime;
         rb.AddForce(force);
+
+        //second movement solution
+        //rb.velocity = new Vector2(direction.x * walkSpeed * Time.fixedDeltaTime, rb.velocity.y);
 
         float playerDist = Vector2.Distance(transform.position, target.transform.position);
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
@@ -108,12 +113,35 @@ public class EnemyAI : MonoBehaviour
 
             if (playerDist <= attackRange)
             {
+
                 if (weapon.CanShoot())
                 {
-                    anim.SetBool("Shoot", shoot = true);
-                    weapon.GunFire();
-                    weapon.WeaponFXEffects();
-                    //anim.SetBool("Shoot", shoot = false);
+                    anim.SetBool("Aim", true);
+
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Aim"))
+                    {
+                        return;
+                    }
+
+                    else
+                    {
+                        //rb.AddForce(-force);
+                        rb.velocity = new Vector2(0, transform.position.y);
+                        anim.SetBool("Shoot", true);
+
+                        weapon.GunFire();
+                        weapon.WeaponFXEffects();
+
+                        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
+                        {
+                            return;
+                        }
+
+                        else
+                            anim.SetBool("Shoot", false);
+                    }
+
+                    anim.SetBool("Aim", false);
                 }
 
                 else
@@ -133,6 +161,7 @@ public class EnemyAI : MonoBehaviour
 
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
 
+        /*
         if (rb.velocity.x >= 0.01f)
         {
             enemyGFX.localScale = new Vector3(1.5f, 1.5f, 1f);
@@ -141,7 +170,7 @@ public class EnemyAI : MonoBehaviour
         else if (rb.velocity.x < 0.01f)
         {
             enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 1f);
-        }
+        }*/
     }
 
     IEnumerator UpdatePath()
@@ -197,7 +226,8 @@ public class EnemyAI : MonoBehaviour
 
     void MeleeAttack()
     {
-        //TODO: Melee Attack
+        //TODO: Melee Attack including distance and so
+        //if playerDistance(from Movement()) is lesser then 1.1f, then stop and hit with sword
         Debug.LogWarning("Melee ATTACK!");
     }
 }

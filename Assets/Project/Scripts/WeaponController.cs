@@ -102,8 +102,6 @@ public class WeaponController : MonoBehaviour
 
     public bool CanShoot()
     {
-        Debug.Log("isReloaded2: " + shootRate);
-
         if (Time.time - lastShootTime >= shootRate)
         {
             if (isReloaded == true)
