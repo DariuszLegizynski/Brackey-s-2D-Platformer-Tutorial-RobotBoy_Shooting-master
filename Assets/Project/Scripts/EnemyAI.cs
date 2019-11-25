@@ -14,19 +14,19 @@ public class EnemyAI : MonoBehaviour
 
     public float walkSpeed = 200f;
     public float nextWaypointDistance = 3f;
-    public float attackRange;
+    public float ShootAttackRange = 8f;
+    public float meleeAttackRange = 2.5f;
+    public float meleeAttackRangeDelta = 1.1f;
 
     public Transform enemyGFX;
 
     //the calculated path
     Path path;
 
-    //waypoint we are currently moving towards
+    //waypoint that we are currently moving towards
     int currentWaypoint = 0;
 
     bool reachedEndOfPath = false;
-    bool shotAnimationReady = false;
-
 
     //caching
     Seeker seeker;
@@ -79,6 +79,7 @@ public class EnemyAI : MonoBehaviour
 
     void Movement()
     {
+        transform.position = this.transform.position;
         //Pathfinding
         if (path == null)
             return;
@@ -94,83 +95,96 @@ public class EnemyAI : MonoBehaviour
             reachedEndOfPath = false;
         }
 
-        //Add force to the found pathway
-        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        //face and move to the found pathway
+        //TODO: fix -> direction causes the character to lag and flip
+        //Vector2 directionToNextWaypoint = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        Vector2 directionToNextWaypoint = ((Vector2)path.vectorPath[1] - (Vector2)path.vectorPath[0]).normalized;
+        Debug.Log("directionToNextWaypoint: " + directionToNextWaypoint);
+        Debug.Log("path.vectorPath[0]: " + path.vectorPath[0]);
+        Debug.Log("path.vectorPath[currentWaypoint]: " + path.vectorPath[currentWaypoint]); //w tym jest problem z kalkulacją. Czasami ta liczba jest taka sama, jak rb.position i wtedy wychodzi wartość, która odwraca postać.
+        Debug.Log("rb.position: " + rb.position);
+        Debug.Log("path.vectorPath[currentWaypoint] - rb.position: " + ((Vector2)path.vectorPath[currentWaypoint] - rb.position));
 
         //first movement solution
-        Vector2 force = direction * walkSpeed * Time.fixedDeltaTime;
-        rb.AddForce(force);
+        //Vector2 force = directionToNextWaypoint * walkSpeed * Time.fixedDeltaTime;
+        //rb.AddForce(force);
 
         //second movement solution
-        //rb.velocity = new Vector2(direction.x * walkSpeed * Time.fixedDeltaTime, rb.velocity.y);
+        //rb.velocity = new Vector2(directionToNextWaypoint.x * walkSpeed * Time.fixedDeltaTime, rb.velocity.y);
 
+        if (directionToNextWaypoint.x > 0.01f)
+        {
+            enemyGFX.localScale = new Vector3(1.5f, 1.5f, 0);
+        }
+
+        else if (directionToNextWaypoint.x <= 0.01f)
+        {
+            enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 0);
+        }
+        
         float playerDist = Vector2.Distance(transform.position, target.transform.position);
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+        float distanceToCurrentWaypoint = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
-        if (distance < nextWaypointDistance)
+        if (distanceToCurrentWaypoint < nextWaypointDistance)
         {
             currentWaypoint++;
+        }
 
-            if (playerDist <= attackRange)
+        if (playerDist > ShootAttackRange)
+        {
+            rb.velocity = Vector2.zero;
+
+            //TODO: Reload only once, need to find soution for checking the boolean of the Can.Shoot() function
+            if (!weapon.CanShoot())
             {
-
-                if (weapon.CanShoot())
-                {
-                    anim.SetBool("Aim", true);
-
-                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Aim"))
-                    {
-                        return;
-                    }
-
-                    else
-                    {
-                        //rb.AddForce(-force);
-                        rb.velocity = new Vector2(0, transform.position.y);
-                        anim.SetBool("Shoot", true);
-
-                        weapon.GunFire();
-                        weapon.WeaponFXEffects();
-
-                        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Shoot"))
-                        {
-                            return;
-                        }
-
-                        else
-                            anim.SetBool("Shoot", false);
-                    }
-
-                    anim.SetBool("Aim", false);
-                }
-
-                else
-                    MeleeAttack();
-
-
-                //weapon.Reload();
-                //here, after shooting will be a function to chase the target and engage it in melee
-                /* Not sure if wanna use. If the enemy cant shoot (becouse he shot already, than he either will reload or go into melee
-                 * else
-                {
-                    //TODO: Reload animation
-                    Debug.Log("Reloading");
-                }*/
+                weapon.Reload();
+                Debug.LogWarning("Enemy Reloads!");
             }
         }
 
-        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-
-        /*
-        if (rb.velocity.x >= 0.01f)
+        else if (playerDist <= ShootAttackRange && weapon.CanShoot())
         {
-            enemyGFX.localScale = new Vector3(1.5f, 1.5f, 1f);
+            anim.SetBool("Aim", true);
+
+            //makes the enemy not move anymore
+            //if (aimAnimation == true)
+            //    transform.position = this.transform.position;
+
+            //else
+            //{
+                anim.SetTrigger("Shoot");
+
+                weapon.GunFire();
+                weapon.WeaponFXEffects();
+            //}
+
+            anim.SetBool("Aim", false);
         }
 
-        else if (rb.velocity.x < 0.01f)
+        else// if (playerDist <= AttackRange && (anim.GetBool("Aim") == false)) // && playerDist < meleeAttackRange)
         {
-            enemyGFX.localScale = new Vector3(-1.5f, 1.5f, 1f);
-        }*/
+            if (path.vectorPath.Count == 0)
+                return;
+
+            rb.velocity = new Vector2(directionToNextWaypoint.x * walkSpeed * Time.fixedDeltaTime, rb.velocity.y);
+
+            if (Vector2.Distance(rb.position, target.transform.position) <= meleeAttackRange)
+            {
+                //rb.velocity = Vector2.zero;
+                rb.velocity = Vector2.MoveTowards(rb.position, target.transform.position, meleeAttackRangeDelta);
+            }
+
+            MeleeAttack();
+        }
+
+        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+    }
+
+    void MeleeAttack()
+    {
+        //TODO: Melee Attack including distance and so
+        //if playerDistance(from Movement()) is lesser then 1.1f, then stop and hit with sword
+        Debug.LogWarning("Melee ATTACK!");
     }
 
     IEnumerator UpdatePath()
@@ -222,12 +236,5 @@ public class EnemyAI : MonoBehaviour
             StartCoroutine(UpdatePath());
             yield return false;
         }
-    }
-
-    void MeleeAttack()
-    {
-        //TODO: Melee Attack including distance and so
-        //if playerDistance(from Movement()) is lesser then 1.1f, then stop and hit with sword
-        Debug.LogWarning("Melee ATTACK!");
     }
 }
