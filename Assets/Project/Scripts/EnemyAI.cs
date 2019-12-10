@@ -14,7 +14,8 @@ public class EnemyAI : MonoBehaviour
 
     public float walkSpeed = 200f;
     public float nextWaypointDistance = 3f;
-    public float ShootAttackRange = 8f;
+    public float shootAttackRange = 6f;
+    public float aimRange = 8f;
     public float meleeAttackRange = 2.5f;
     public float meleeAttackRangeDelta = 1.1f;
 
@@ -96,14 +97,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         //face and move to the found pathway
-        //TODO: fix -> direction causes the character to lag and flip
-        //Vector2 directionToNextWaypoint = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 directionToNextWaypoint = ((Vector2)path.vectorPath[1] - (Vector2)path.vectorPath[0]).normalized;
-        Debug.Log("directionToNextWaypoint: " + directionToNextWaypoint);
-        Debug.Log("path.vectorPath[0]: " + path.vectorPath[0]);
-        Debug.Log("path.vectorPath[currentWaypoint]: " + path.vectorPath[currentWaypoint]); //w tym jest problem z kalkulacją. Czasami ta liczba jest taka sama, jak rb.position i wtedy wychodzi wartość, która odwraca postać.
-        Debug.Log("rb.position: " + rb.position);
-        Debug.Log("path.vectorPath[currentWaypoint] - rb.position: " + ((Vector2)path.vectorPath[currentWaypoint] - rb.position));
 
         //first movement solution
         //Vector2 force = directionToNextWaypoint * walkSpeed * Time.fixedDeltaTime;
@@ -130,11 +124,11 @@ public class EnemyAI : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (playerDist > ShootAttackRange)
+        if (playerDist > aimRange)
         {
             rb.velocity = Vector2.zero;
 
-            //TODO: Reload only once, need to find soution for checking the boolean of the Can.Shoot() function
+            //TODO: Reload only once, need to find solution for checking the boolean of the Can.Shoot() function
             if (!weapon.CanShoot())
             {
                 weapon.Reload();
@@ -142,23 +136,25 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        else if (playerDist <= ShootAttackRange && weapon.CanShoot())
+        else if (playerDist <= aimRange && weapon.CanShoot())
         {
             anim.SetBool("Aim", true);
-
-            //makes the enemy not move anymore
+            
+            rb.velocity = Vector2.zero;
+            //makes the enemy not to move anymore
             //if (aimAnimation == true)
             //    transform.position = this.transform.position;
 
-            //else
-            //{
+            if (playerDist <= shootAttackRange && weapon.CanShoot())
+            {
+                rb.velocity = Vector2.zero;
                 anim.SetTrigger("Shoot");
 
                 weapon.GunFire();
                 weapon.WeaponFXEffects();
-            //}
+            }
 
-            anim.SetBool("Aim", false);
+            //anim.SetBool("Aim", false);
         }
 
         else// if (playerDist <= AttackRange && (anim.GetBool("Aim") == false)) // && playerDist < meleeAttackRange)
